@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using StarportValley.Models;
 
 namespace StarportValley
 {
@@ -11,6 +13,9 @@ namespace StarportValley
   {
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
+    KeyboardState previousKeyboardState;
+    MouseState previousMouseState;
+    private List<Sprite> _sprites;
 
     public Game1()
     {
@@ -29,6 +34,8 @@ namespace StarportValley
       // TODO: Add your initialization logic here
 
       base.Initialize();
+      previousKeyboardState = Keyboard.GetState();
+      previousMouseState = Mouse.GetState();
     }
 
     /// <summary>
@@ -37,10 +44,42 @@ namespace StarportValley
     /// </summary>
     protected override void LoadContent()
     {
-      // Create a new SpriteBatch, which can be used to draw textures.
       spriteBatch = new SpriteBatch(GraphicsDevice);
+      var animations = new Dictionary<string, Animation>()
+      {
+        {"WalkRight", new Animation(Content.Load<Texture2D>("TestWalkingSprite"), 4) },
+        {"WalkLeft", new Animation(Content.Load<Texture2D>("TestWalkingSpriteLeft"), 4) }
+      };
 
-      // TODO: use this.Content to load your game content here
+      _sprites = new List<Sprite>()
+      {
+        new Sprite(animations)
+          {
+            input = new Input()
+            {
+              Up = Keys.W,
+              Down = Keys.S,
+              Left = Keys.A,
+              Right = Keys.D
+            },
+            Position = new Vector2(100, 200),
+            Speed = 4f
+          },
+        new Sprite(animations)
+          {
+            input = new Input()
+            {
+              Up = Keys.Up,
+              Down = Keys.Down,
+              Left = Keys.Left,
+              Right = Keys.Right
+            },
+            Position = new Vector2(100, 200),
+            Speed = 8f
+          }
+      };
+
+
     }
 
     /// <summary>
@@ -61,6 +100,10 @@ namespace StarportValley
     {
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         Exit();
+      foreach (var sprite in _sprites)
+      {
+        sprite.Update(gameTime, _sprites);
+      }
 
       // TODO: Add your update logic here
 
@@ -73,9 +116,15 @@ namespace StarportValley
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-      GraphicsDevice.Clear(Color.CornflowerBlue);
+      GraphicsDevice.Clear(Color.DarkSalmon);
 
       // TODO: Add your drawing code here
+      spriteBatch.Begin();
+      foreach (var sprite in _sprites)
+      {
+        sprite.Draw(spriteBatch);
+      }
+      spriteBatch.End();
 
       base.Draw(gameTime);
     }
