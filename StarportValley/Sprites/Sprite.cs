@@ -14,19 +14,18 @@ namespace StarportValley
   public class Sprite
   {
     protected AnimationManager _animationManger;
-    protected Dictionary<string, Animation> _animations;
+    protected Dictionary<string, Animation> spriteAnimations;
 
     protected Vector2 _position;
     private Texture2D _texture;
 
-    public Rectangle Rectangle
+    public virtual Rectangle HitBox
     {
       get
       {
         return new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
       }
     }
-
     public Vector2 Position
     {
       get { return _position; }
@@ -42,8 +41,8 @@ namespace StarportValley
    
     public Sprite(Dictionary<string, Animation> animations)
     {
-      _animations = animations;
-      _animationManger = new AnimationManager(_animations.First().Value);
+      spriteAnimations = animations;
+      _animationManger = new AnimationManager(spriteAnimations.First().Value);
     }
 
     public Sprite(Texture2D texture)
@@ -51,9 +50,6 @@ namespace StarportValley
       _texture = texture;
     }
 
-    public Input input;
-    public float Speed = 2f;
-    public Vector2 Velocity;
     public virtual void Update(GameTime gameTime, List<Sprite> sprites)
     {
 
