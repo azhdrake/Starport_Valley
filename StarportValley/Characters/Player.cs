@@ -8,5 +8,6 @@ namespace StarportValley.Characters
 {
   class Player
   {
+
   }
 }

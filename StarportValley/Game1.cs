@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using StarportValley.Models;
+using StarportValley.Sprites;
 
 namespace StarportValley
 {
@@ -53,7 +54,7 @@ namespace StarportValley
 
       _sprites = new List<Sprite>()
       {
-        new Sprite(animations)
+        new Character(animations)
           {
             input = new Input()
             {
@@ -65,7 +66,7 @@ namespace StarportValley
             Position = new Vector2(100, 200),
             Speed = 4f
           },
-        new Sprite(animations)
+        new Character(animations)
           {
             input = new Input()
             {
@@ -74,7 +75,7 @@ namespace StarportValley
               Left = Keys.Left,
               Right = Keys.Right
             },
-            Position = new Vector2(100, 200),
+            Position = new Vector2(200, 200),
             Speed = 8f
           }
       };
