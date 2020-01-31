@@ -11,12 +11,11 @@ using StarportValley.Models;
 
 namespace StarportValley.Sprites
 {
-  public class Character : Sprite
+  public class MobileSprite : Sprite
   {
-
     int spriteWidth;
     int spriteHeight;
-    public Character(Dictionary<string, Animation> animations) : base(animations)
+    public MobileSprite(Dictionary<string, Animation> animations) : base(animations)
     {
       this.spriteHeight = animations["WalkRight"].FrameHeight;
       this.spriteWidth = animations["WalkLeft"].FrameWidth;
@@ -33,7 +32,6 @@ namespace StarportValley.Sprites
         return new Rectangle((int)Position.X, (int)Position.Y, spriteWidth, spriteHeight);
       }
     }
-
 
     public void Move()
     {

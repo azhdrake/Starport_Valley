@@ -54,7 +54,7 @@ namespace StarportValley
 
       _sprites = new List<Sprite>()
       {
-        new Character(animations)
+        new MobileSprite(animations)
           {
             input = new Input()
             {
@@ -66,7 +66,7 @@ namespace StarportValley
             Position = new Vector2(100, 200),
             Speed = 4f
           },
-        new Character(animations)
+        new MobileSprite(animations)
           {
             input = new Input()
             {
