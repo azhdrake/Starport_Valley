@@ -51,10 +51,15 @@ namespace StarportValley
         {"WalkRight", new Animation(Content.Load<Texture2D>("TestWalkingSprite"), 4) },
         {"WalkLeft", new Animation(Content.Load<Texture2D>("TestWalkingSpriteLeft"), 4) }
       };
+      var sethanie_animations = new Dictionary<string, Animation>()
+      {
+        { "WalkRight", new Animation(Content.Load<Texture2D>("sethanie_walk_right"), 4) },
+        { "WalkLeft", new Animation(Content.Load<Texture2D>("sethanie_walk_left"), 4) }
+      };
 
       _sprites = new List<Sprite>()
       {
-        new MobileSprite(animations)
+        new MobileSprite(sethanie_animations)
           {
             input = new Input()
             {
