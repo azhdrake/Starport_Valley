@@ -11,9 +11,9 @@ using StarportValley.Models;
 
 namespace StarportValley
 {
-  public class Sprite
+  public class Sprite : Component
   {
-    protected AnimationManager _animationManger;
+    protected AnimationManager animationManger;
     protected Dictionary<string, Animation> spriteAnimations;
 
     protected Vector2 _position;
@@ -33,9 +33,9 @@ namespace StarportValley
       set
       {
         _position = value;
-        if (_animationManger != null)
+        if (animationManger != null)
         {
-          _animationManger.Position = _position;
+          animationManger.Position = _position;
         }
       }
     }
@@ -43,7 +43,7 @@ namespace StarportValley
     public Sprite(Dictionary<string, Animation> animations)
     {
       spriteAnimations = animations;
-      _animationManger = new AnimationManager(spriteAnimations.First().Value);
+      animationManger = new AnimationManager(spriteAnimations.First().Value);
     }
 
     public Sprite(Texture2D texture)
@@ -56,17 +56,21 @@ namespace StarportValley
 
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
       {
         if (_texture != null)
         {
           spriteBatch.Draw(_texture, Position, Color.White);
         }
-        else if (_animationManger != null)
+        else if (animationManger != null)
         {
-          _animationManger.Draw(spriteBatch);
+          animationManger.Draw(spriteBatch);
         }
         else throw new Exception("Somethings wrong in Sprite.Draw");
       }
+
+    public override void Update(GameTime gameTime)
+    {
+    }
   }
 }

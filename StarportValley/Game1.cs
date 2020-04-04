@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using StarportValley.Models;
 using StarportValley.Sprites;
+using StarportValley.States;
 
 namespace StarportValley
 {
@@ -14,12 +15,20 @@ namespace StarportValley
   {
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
-    KeyboardState previousKeyboardState;
-    MouseState previousMouseState;
-    private List<Sprite> _sprites;
 
+    public static int ScreenWidth = 2000;
+    public static int ScreenHeight = 1000;
+
+    private State currentState;
+    private State nextState;
+
+    public void ChangeState(State state)
+    {
+      nextState = state;
+    }
     public Game1()
     {
+      
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
     }
@@ -33,10 +42,12 @@ namespace StarportValley
     protected override void Initialize()
     {
       // TODO: Add your initialization logic here
-
+      IsMouseVisible = true;
+      graphics.PreferredBackBufferWidth = ScreenWidth;
+      graphics.PreferredBackBufferHeight = ScreenHeight;
+      graphics.ApplyChanges();
       base.Initialize();
-      previousKeyboardState = Keyboard.GetState();
-      previousMouseState = Mouse.GetState();
+      
     }
 
     /// <summary>
@@ -46,45 +57,11 @@ namespace StarportValley
     protected override void LoadContent()
     {
       spriteBatch = new SpriteBatch(GraphicsDevice);
-      var animations = new Dictionary<string, Animation>()
-      {
-        {"WalkRight", new Animation(Content.Load<Texture2D>("TestWalkingSprite"), 4) },
-        {"WalkLeft", new Animation(Content.Load<Texture2D>("TestWalkingSpriteLeft"), 4) }
-      };
-      var sethanie_animations = new Dictionary<string, Animation>()
-      {
-        { "WalkRight", new Animation(Content.Load<Texture2D>("sethanie_walk_right"), 4) },
-        { "WalkLeft", new Animation(Content.Load<Texture2D>("sethanie_walk_left"), 4) }
-      };
 
-      _sprites = new List<Sprite>()
-      {
-        new MobileSprite(sethanie_animations)
-          {
-            input = new Input()
-            {
-              Up = Keys.W,
-              Down = Keys.S,
-              Left = Keys.A,
-              Right = Keys.D
-            },
-            Position = new Vector2(100, 200),
-            Speed = 4f
-          },
-        new MobileSprite(animations)
-          {
-            input = new Input()
-            {
-              Up = Keys.Up,
-              Down = Keys.Down,
-              Left = Keys.Left,
-              Right = Keys.Right
-            },
-            Position = new Vector2(200, 200),
-            Speed = 8f
-          }
-      };
+      currentState = new Menu(this, graphics.GraphicsDevice, Content);
+      currentState.LoadContent();
 
+      nextState = null;
 
     }
 
@@ -104,12 +81,19 @@ namespace StarportValley
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Update(GameTime gameTime)
     {
+      if(nextState != null)
+      {
+        currentState = nextState;
+        currentState.LoadContent();
+
+        nextState = null;
+      }
+
+      currentState.Update(gameTime);
+      currentState.PostUpdate(gameTime);
+
       if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         Exit();
-      foreach (var sprite in _sprites)
-      {
-        sprite.Update(gameTime, _sprites);
-      }
 
       // TODO: Add your update logic here
 
@@ -124,13 +108,10 @@ namespace StarportValley
     {
       GraphicsDevice.Clear(Color.DarkSalmon);
 
+      currentState.Draw(gameTime, spriteBatch);
+
       // TODO: Add your drawing code here
-      spriteBatch.Begin();
-      foreach (var sprite in _sprites)
-      {
-        sprite.Draw(spriteBatch);
-      }
-      spriteBatch.End();
+     
 
       base.Draw(gameTime);
     }

@@ -13,6 +13,7 @@ namespace StarportValley.Sprites
 {
   public class MobileSprite : Sprite
   {
+    private KeyboardState currentKeyboardState;
     int spriteWidth;
     int spriteHeight;
     public MobileSprite(Dictionary<string, Animation> animations) : base(animations)
@@ -33,25 +34,25 @@ namespace StarportValley.Sprites
       }
     }
 
-    public void Move()
+    public void Move(KeyboardState key)
     {
       if (input == null)
       {
         return;
       }
-      if (Keyboard.GetState().IsKeyDown(input.Left))
+      if (key.IsKeyDown(input.Left))
       {
         Velocity.X -= Speed;
       }
-      if (Keyboard.GetState().IsKeyDown(input.Right))
+      if (key.IsKeyDown(input.Right))
       {
         Velocity.X += Speed;
       }
-      if (Keyboard.GetState().IsKeyDown(input.Up))
+      if (key.IsKeyDown(input.Up))
       {
         Velocity.Y -= Speed;
       }
-      if (Keyboard.GetState().IsKeyDown(input.Down))
+      if (key.IsKeyDown(input.Down))
       {
         Velocity.Y += Speed;
       }
@@ -92,24 +93,24 @@ namespace StarportValley.Sprites
     {
       if (Velocity.X > 0)
       {
-        _animationManger.Play(spriteAnimations["WalkRight"]);
+        animationManger.Play(spriteAnimations["WalkRight"]);
       }
       else if (Velocity.X < 0)
       {
-        _animationManger.Play(spriteAnimations["WalkLeft"]);
+        animationManger.Play(spriteAnimations["WalkLeft"]);
       }
       else if (Velocity.Y > 0)
       {
-        _animationManger.Play(spriteAnimations["WalkRight"]);
+        animationManger.Play(spriteAnimations["WalkRight"]);
       }
       else if (Velocity.Y < 0)
       {
-        _animationManger.Play(spriteAnimations["WalkLeft"]);
+        animationManger.Play(spriteAnimations["WalkLeft"]);
       }
 
       else
       {
-        _animationManger.Stop();
+        animationManger.Stop();
       }
     }
 
@@ -136,13 +137,15 @@ namespace StarportValley.Sprites
 
     public override void Update(GameTime gameTime, List<Sprite> sprites)
     {
-      Move();
+      currentKeyboardState = Keyboard.GetState();
+
+      Move(currentKeyboardState);
 
       CheckColisions(sprites);
 
       ChooseSpritesheet();
 
-      _animationManger.Update(gameTime);
+      animationManger.Update(gameTime);
 
       Position += Velocity;
       Velocity = Vector2.Zero;
