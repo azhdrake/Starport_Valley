@@ -12,7 +12,8 @@ using StarportValley.Models;
 namespace StarportValley
 {
   public class Sprite : Component
-  {
+  { // The sprite class. For when you need something that looks like something.
+
     protected AnimationManager animationManger;
     protected Dictionary<string, Animation> spriteAnimations;
 
@@ -41,13 +42,13 @@ namespace StarportValley
     }
    
     public Sprite(Dictionary<string, Animation> animations)
-    {
+    { // Constuctor for mobile sprites
       spriteAnimations = animations;
       animationManger = new AnimationManager(spriteAnimations.First().Value);
     }
 
     public Sprite(Texture2D texture)
-    {
+    { // Constructor fo stationary sprites.
       _texture = texture;
     }
 

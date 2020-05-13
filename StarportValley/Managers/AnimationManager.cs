@@ -10,7 +10,7 @@ using StarportValley.Models;
 namespace StarportValley.Managers
 {
   public class AnimationManager
-  {
+  { // Animation manager. It manages the animations. 
     private Animation _animation;
     private float _timer;
     public Vector2 Position { get; set; }
@@ -34,12 +34,17 @@ namespace StarportValley.Managers
       _animation.CurrentFrame = 0;
     }
     public void Update(GameTime gameTime)
-    {
+    { 
+      // adds the tick time to the timer
       _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+      // Checks the elapsed time vs the framespeed, if more then the framespeed time has passed we reset the time and bump to the next frame.
       if (_timer > _animation.FrameSpeed)
       {
         _timer = 0f;
         _animation.CurrentFrame++;
+
+        // Completing the loop so we don't try to draw something that doesn't exist.
         if (_animation.CurrentFrame >= _animation.FrameCount)
         {
           _animation.CurrentFrame = 0;
@@ -48,8 +53,12 @@ namespace StarportValley.Managers
     }
 
     public void Draw(SpriteBatch spriteBatch)
-    {
-      spriteBatch.Draw(_animation.Texture, Position, new Rectangle(_animation.CurrentFrame * _animation.FrameWidth, 0, _animation.FrameWidth, _animation.FrameHeight), Color.White);
+    { // The rectagle is a destination rectangle, the full purpose of which I'm having trouble understanding but you need it to make this work.
+      spriteBatch.Draw(
+        _animation.Texture, 
+        Position, 
+        new Rectangle(_animation.CurrentFrame * _animation.FrameWidth, 0, _animation.FrameWidth, _animation.FrameHeight), 
+        Color.White);
     }
   }
 }

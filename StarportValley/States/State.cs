@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace StarportValley.States
-{
+{ // The abstract State class, for defining gamestates like menu, gameplay, credits, highscore screen, or whatever.
+  // We got a menu and a game. That's it.
   public abstract class State
   {
     protected ContentManager content;

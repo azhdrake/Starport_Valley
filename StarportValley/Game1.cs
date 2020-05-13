@@ -7,7 +7,9 @@ using StarportValley.Sprites;
 using StarportValley.States;
 
 namespace StarportValley
-{
+{ // Game1.cs. This is where it all starts. 
+  // The three slash comments come with the Game1 file when a new monogame project is made.
+
   /// <summary>
   /// This is the main type for your game.
   /// </summary>
@@ -16,8 +18,8 @@ namespace StarportValley
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
 
-    public static int ScreenWidth = 2000;
-    public static int ScreenHeight = 1000;
+    public static int ScreenWidth = 1500;
+    public static int ScreenHeight = 750;
 
     private State currentState;
     private State nextState;
@@ -28,7 +30,6 @@ namespace StarportValley
     }
     public Game1()
     {
-      
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
     }
@@ -58,6 +59,7 @@ namespace StarportValley
     {
       spriteBatch = new SpriteBatch(GraphicsDevice);
 
+      // This is what triggers the game opening on it's menu.
       currentState = new Menu(this, graphics.GraphicsDevice, Content);
       currentState.LoadContent();
 
@@ -82,7 +84,7 @@ namespace StarportValley
     protected override void Update(GameTime gameTime)
     {
       if(nextState != null)
-      {
+      { // Checks to see if the gamestate needs changing, aka if someone pressed the start game button.
         currentState = nextState;
         currentState.LoadContent();
 
@@ -91,11 +93,6 @@ namespace StarportValley
 
       currentState.Update(gameTime);
       currentState.PostUpdate(gameTime);
-
-      if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        Exit();
-
-      // TODO: Add your update logic here
 
       base.Update(gameTime);
     }
@@ -109,9 +106,6 @@ namespace StarportValley
       GraphicsDevice.Clear(Color.DarkSalmon);
 
       currentState.Draw(gameTime, spriteBatch);
-
-      // TODO: Add your drawing code here
-     
 
       base.Draw(gameTime);
     }

@@ -9,7 +9,7 @@ using StarportValley.Sprites;
 namespace StarportValley.Characters
 {
   class Player : Character
-  {
+  { // This is me getting ahead of myself and planning for future needs.
     public Player(string name, MobileSprite physicality) : base(name, physicality)
     {
 

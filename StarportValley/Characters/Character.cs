@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using StarportValley.Sprites;
 
 namespace StarportValley.Characters
-{
+{ // This is me getting ahead of myself and planning for future needs.
   class Character
   {
     protected string Name;

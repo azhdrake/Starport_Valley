@@ -12,7 +12,8 @@ using StarportValley.Models;
 namespace StarportValley.Sprites
 {
   public class MobileSprite : Sprite
-  {
+  {// The mobileSprite class, for defining things that have sprites and also move.
+     
     private KeyboardState currentKeyboardState;
     int spriteWidth;
     int spriteHeight;
@@ -26,8 +27,11 @@ namespace StarportValley.Sprites
     public float Speed = 4f;
     public Vector2 Velocity;
 
+    public bool HasWateringCan = false;
+    public Sprite touchedSprite;
+
     public override Rectangle HitBox
-    {
+    { // For collision stuff.
       get
       {
         return new Rectangle((int)Position.X, (int)Position.Y, spriteWidth, spriteHeight);
@@ -35,7 +39,7 @@ namespace StarportValley.Sprites
     }
 
     public void Move(KeyboardState key)
-    {
+    { // Moving! Idealy this would be in the player character class, but I haven't developed it enough to make that happen yet.
       if (input == null)
       {
         return;
@@ -58,7 +62,15 @@ namespace StarportValley.Sprites
       }
     }
 
-    // Collision
+    public void water()
+    {
+      if (HasWateringCan)
+      {
+
+      }
+    }
+
+    // Collisions. It's a lot of almost identical blocks of code and it works and I am not explaining all of it.
     protected bool isTouchingLeft(Sprite sprite)
     {
       return this.HitBox.Right + this.Velocity.X > sprite.HitBox.Left &&
@@ -90,7 +102,7 @@ namespace StarportValley.Sprites
     // No more collision bools
 
     public void ChooseSpritesheet()
-    {
+    { // Choosing the spritesheet that's facing the right direction, so long as that direction is either left or right.
       if (Velocity.X > 0)
       {
         animationManger.Play(spriteAnimations["WalkRight"]);
@@ -109,34 +121,36 @@ namespace StarportValley.Sprites
       }
 
       else
-      {
+      { // No change in velocity? Retun to standing position.
         animationManger.Stop();
       }
     }
 
     public void CheckColisions(List<Sprite> sprites) 
-    {
+    { // checks to make sure that you're not wakling through something. 
       foreach (var sprite in sprites)
       {
         if (sprite == this)
-        {
+        { // makes sure you don't stop because you're touching yourself.
           continue;
         }
         if (this.Velocity.X > 0 && this.isTouchingLeft(sprite) ||
           this.Velocity.X < 0 && this.isTouchingRight(sprite))
         {
           this.Velocity.X = 0;
+          this.touchedSprite = sprite;
         }
         if (this.Velocity.Y > 0 && this.isTouchingTop(sprite) ||
           this.Velocity.Y < 0 && this.isTouchingBottom(sprite))
         {
           this.Velocity.Y = 0;
+          this.touchedSprite = sprite;
         }
       }
     }
 
     public override void Update(GameTime gameTime, List<Sprite> sprites)
-    {
+    { // checks the keyboard state, gets a velocity from the move function, checks for colisions, gets the right spitesheet, updates the animation, and moves the sprite and resets it's velocity.
       currentKeyboardState = Keyboard.GetState();
 
       Move(currentKeyboardState);
@@ -146,6 +160,8 @@ namespace StarportValley.Sprites
       ChooseSpritesheet();
 
       animationManger.Update(gameTime);
+
+
 
       Position += Velocity;
       Velocity = Vector2.Zero;

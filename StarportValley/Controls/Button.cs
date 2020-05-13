@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StarportValley.Controls
 {
   public class Button : Component
-  {
+  { // The button class. Buttons know if they are clicked and how to fire off a method when clicked.
 
     private MouseState currentMouse;
     private MouseState previousMouse;
@@ -23,34 +23,17 @@ namespace StarportValley.Controls
 
     public EventHandler Click;
     public bool Clicked
-    {
-      get;
-      private set;
-    }
+    { get; private set; }
     public float Layer
-    {
-      get; 
-      set;
-    }
+    { get; set; }
 
     public Vector2 Origin
-    {
-      get
-      {
-        return new Vector2(texture.Width / 2, texture.Height / 2);
-      }
-    }
+    { get { return new Vector2(texture.Width / 2, texture.Height / 2); } }
 
     public Color PenColor
-    {
-      get;
-      set;
-    }
+    { get; set; }
     public Vector2 Position
-    {
-      get;
-      set;
-    }
+    { get; set; }
 
     public Rectangle ButtonRectangle
     {
@@ -61,25 +44,25 @@ namespace StarportValley.Controls
     }
 
     public string Text
-    {
-      get;
-      set;
-    }
+    { get; set; }
 
-    public Button(Texture2D btnTexture, SpriteFont btnFont, Color txtColor)
+    public Color penColor = Color.Black;
+    public Color buttonColor = Color.White;
+    public Color hoverColor = Color.Gray;
+
+    public Button(Texture2D btnTexture, SpriteFont btnFont)
     {
       texture = btnTexture;
       font = btnFont;
-      PenColor = txtColor;
     }
     
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-    {
-      var color = Color.White;
+    { // Draws the button. Draws it a different color if the mouse is on it.
+      var color = buttonColor;
       if (isHovering)
       {
-        color = Color.Gray;
+        color = hoverColor;
       }
 
       spriteBatch.Draw(texture, ButtonRectangle, color);
@@ -90,20 +73,24 @@ namespace StarportValley.Controls
         var x = (ButtonRectangle.X + (ButtonRectangle.Width / 2)) - (font.MeasureString(Text).X * 3 / 2);
         var y = (ButtonRectangle.Y + (ButtonRectangle.Height / 2)) - (font.MeasureString(Text).Y * 3 / 2);
 
-        spriteBatch.DrawString(font, Text, new Vector2(x, y), PenColor,0,new Vector2(0,0), 3, 0, 0);
+        spriteBatch.DrawString(font, Text, new Vector2(x, y), penColor,0,new Vector2(0,0), 3, 0, 0);
       }
     }
 
     public override void Update(GameTime gameTime)
-    {
+    { // The method that does things.
+
+      // Saves the mousestate from last tick as previousmouse so we can tell if the mouse state has changed.
       previousMouse = currentMouse;
       currentMouse = Mouse.GetState();
 
       var mouseRectangle = new Rectangle(currentMouse.X, currentMouse.Y, 1, 1);
       
       isHovering = false;
+
+      // Checks if the mouse is over the button, checks if the mousestate changed, and fires off method if both of those things are true and there is a method to fire off.
       if (mouseRectangle.Intersects(ButtonRectangle))
-      {
+      { 
         isHovering = true;
 
         if (currentMouse.LeftButton == ButtonState.Released && previousMouse.LeftButton == ButtonState.Pressed)
