@@ -18,7 +18,7 @@ namespace StarportValley
     protected Dictionary<string, Animation> spriteAnimations;
 
     protected Vector2 _position;
-    private Texture2D _texture;
+    protected Texture2D _texture;
 
     public virtual Rectangle HitBox
     {
@@ -51,7 +51,10 @@ namespace StarportValley
     { // Constructor fo stationary sprites.
       _texture = texture;
     }
-
+    public Sprite(Texture2D[] textures)
+    { // Constructor fo stationary sprites with multiple textures.
+      _texture = textures[0];
+    }
     public virtual void Update(GameTime gameTime, List<Sprite> sprites)
     {
 

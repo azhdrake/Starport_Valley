@@ -42,9 +42,10 @@ namespace StarportValley.States
       };
 
       // An array containing all the growth states sprites of the plant.
-      Sprite[] testPlantSprites = { new Sprite(content.Load<Texture2D>("Plant0")) { Position = new Vector2(300, 300) }, new Sprite(content.Load<Texture2D>("Plant1")) { Position = new Vector2(300, 300) }, new Sprite(content.Load<Texture2D>("Plant2")) { Position = new Vector2(300, 300) } };
+      Texture2D[] testPlantTextures = { content.Load<Texture2D>("Plant0"), content.Load<Texture2D>("Plant1"), content.Load<Texture2D>("Plant2")};
       
-      Plant test_plant = new Plant("Test Plant", testPlantSprites, 0, 0);
+      Plant test_plant = new Plant("Test Plant", testPlantTextures, 0, 0);
+      test_plant.Position = new Vector2(300, 300);
 
       // List of components so we can do things to all components, like test for colisions.
       components = new List<Component>()
@@ -89,7 +90,7 @@ namespace StarportValley.States
         if (component.GetType().Equals(typeof(Plant)))
         {
           Plant plant = (Plant)component;
-          sprites.Add(plant.Apperance);
+          sprites.Add(plant);
         }
         else if (component.GetType().Equals(typeof(MobileSprite)))
         {
@@ -119,6 +120,11 @@ namespace StarportValley.States
       // groups all the mobilesprites
       foreach (var component in components)
       {
+        if (component.GetType().Equals(typeof(Plant)))
+        {
+          Plant plant = (Plant)component;
+          sprites.Add(plant);
+        }
         if (component.GetType().Equals(typeof(MobileSprite)))
         {
           MobileSprite sprite = (MobileSprite)component;

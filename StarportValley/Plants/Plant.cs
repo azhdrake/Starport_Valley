@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace StarportValley.Plants
 { // The plant class. There's a lot of stuff in here that's planning for the future and will not see use for quite some time.
-  class Plant : Component
+  public class Plant : Sprite
   {
-    private Sprite[] AllSprites;
-    public Sprite Apperance;
+    private Texture2D[] AllTextures;
     private Dictionary<string, int[]> Drops; // We're going to worry about this a little later. { Name : [minDrop, maxDrop, 0/1 where 0 = plant dies when harvested 1 = plant does not die when harvested] }
     private string Name;
     private int Age;
@@ -24,9 +23,9 @@ namespace StarportValley.Plants
     private Boolean IsWatered;
     private Boolean Spreads;
 
-    public Plant(string name, Sprite[] sprites, int color, int season)
+    public Plant(string name, Texture2D[] textures, int color, int season) : base(textures)
     { // All plants need to have defined sprites, name, color (relates to what species can eat them once we get to the point where we have a bunch of aliens.), and growth season.
-      this.AllSprites = sprites;
+      this.AllTextures = textures;
       this.Name = name;
       this.Color = color;
       this.Season = season;
@@ -34,7 +33,7 @@ namespace StarportValley.Plants
       this.Age = 0;
       this.Health = 10;
 
-      this.Apperance = sprites[Age];
+      this._texture = AllTextures[Age];
 
       this.IsDead = false;
       this.IsHarvestable = false;
@@ -48,13 +47,8 @@ namespace StarportValley.Plants
       if(Age < 2)
       {
         Age++;
-        Apperance = AllSprites[Age];
+        _texture = AllTextures[Age];
       }
-    }
-
-    public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-    {
-      
     }
 
     public override void Update(GameTime gameTime)
