@@ -141,23 +141,6 @@ namespace StarportValley.States
       { // Quit method
         game.ChangeState(new Menu(game, graphicsDevice, content)); 
       }
-
-      // TODO: Replace with code for playersprite watering plant
-      if (Keyboard.GetState().IsKeyDown(Keys.G))
-      {
-        List<Plant> plants = new List<Plant>();
-        foreach(var component in components)
-        {
-          if(component.GetType().Equals(typeof(Plant)))
-          {
-            plants.Add((Plant) component);
-          }
-        }
-        foreach(Plant plant in plants)
-        {
-          plant.WaterPlant();
-        }
-      }
     }
   }
 }

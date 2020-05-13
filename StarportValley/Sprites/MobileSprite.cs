@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StarportValley.Managers;
 using StarportValley.Models;
+using StarportValley.Plants;
 
 namespace StarportValley.Sprites
 {
@@ -15,6 +16,7 @@ namespace StarportValley.Sprites
   {// The mobileSprite class, for defining things that have sprites and also move.
      
     private KeyboardState currentKeyboardState;
+    private KeyboardState previousKeyboardState;
     int spriteWidth;
     int spriteHeight;
     public MobileSprite(Dictionary<string, Animation> animations) : base(animations)
@@ -27,7 +29,7 @@ namespace StarportValley.Sprites
     public float Speed = 4f;
     public Vector2 Velocity;
 
-    public bool HasWateringCan = false;
+    public bool HasWateringCan = true;
     public Sprite touchedSprite;
 
     public override Rectangle HitBox
@@ -62,11 +64,15 @@ namespace StarportValley.Sprites
       }
     }
 
-    public void water()
+    public void water(Sprite sprite)
     {
-      if (HasWateringCan)
+      if (HasWateringCan && touchedSprite == sprite)
       {
-
+        if (sprite.GetType().Equals(typeof(Plant)))
+        {
+          Plant plant = (Plant)sprite;
+          plant.WaterPlant();
+        }
       }
     }
 
@@ -151,6 +157,7 @@ namespace StarportValley.Sprites
 
     public override void Update(GameTime gameTime, List<Sprite> sprites)
     { // checks the keyboard state, gets a velocity from the move function, checks for colisions, gets the right spitesheet, updates the animation, and moves the sprite and resets it's velocity.
+      previousKeyboardState = currentKeyboardState;
       currentKeyboardState = Keyboard.GetState();
 
       Move(currentKeyboardState);
@@ -161,7 +168,18 @@ namespace StarportValley.Sprites
 
       animationManger.Update(gameTime);
 
+      if(previousKeyboardState.IsKeyDown(input.Interact) && 
+        !currentKeyboardState.IsKeyDown(input.Interact)  &&
+        touchedSprite != null &&
+        Velocity == Vector2.Zero)
+      {
+        water(touchedSprite);
+      }
 
+      if(Velocity != Vector2.Zero)
+      {
+        touchedSprite = null;
+      }
 
       Position += Velocity;
       Velocity = Vector2.Zero;
