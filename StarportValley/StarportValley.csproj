@@ -100,6 +100,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="README.md" />
     <None Include="StarportValley_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

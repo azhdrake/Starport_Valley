@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace StarportValley.States
-{
+{ 
   class GameState : State
   {
     // The gamestate, as in the state the game is in when playing happens.
@@ -41,15 +41,19 @@ namespace StarportValley.States
         { "WalkLeft", new Animation(content.Load<Texture2D>("sethanie_walk_left"), 4) }
       };
 
-      // An array containing all the growth states sprites of the plant.
+      // An array containing all the growth states textures of the plant.
       Texture2D[] testPlantTextures = { content.Load<Texture2D>("Plant0"), content.Load<Texture2D>("Plant1"), content.Load<Texture2D>("Plant2")};
       
       Plant test_plant = new Plant("Test Plant", testPlantTextures, 0, 0);
       test_plant.Position = new Vector2(300, 300);
 
+      Plant other_plant = new Plant("Test Plant", testPlantTextures, 0, 0);
+      other_plant.Position = new Vector2(500, 500);
+
       // List of components so we can do things to all components, like test for colisions.
       components = new List<Component>()
       {
+        other_plant,
         test_plant,
         new MobileSprite(sethanie_animations)
           {

@@ -53,7 +53,7 @@ namespace StarportValley.Managers
     }
 
     public void Draw(SpriteBatch spriteBatch)
-    { // The rectagle is a destination rectangle, the full purpose of which I'm having trouble understanding but you need it to make this work.
+    { // The rectagle is a destination rectangle. The spritesheet, which is the texture the animation is using, is a single long image with each frame placed next to each other. The destination rectangle is the rectangle selecting the current frame, and that is what drawn.
       spriteBatch.Draw(
         _animation.Texture, 
         Position, 

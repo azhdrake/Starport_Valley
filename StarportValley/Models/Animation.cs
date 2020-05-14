@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace StarportValley.Models
 {
   public class Animation
-  { // An animation object. Used to keep track of where we are in the animation.
+  { // An animation object. Used to hold the texture and keep track of where we are in the animation.
     public int CurrentFrame { get; set; }
     public int FrameCount { get; private set; }
 
